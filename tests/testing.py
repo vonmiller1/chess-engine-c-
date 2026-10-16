@@ -65,7 +65,10 @@ r4rk1/1b2ppbp/pq4pn/2pp1PB1/1p2P3/1P1P1NN1/1PP3PP/R2Q1RK1 w - - 0 13
 
     @staticmethod
     def delete_bench_epd():
-        os.remove(f"{os.path.join(PATH,'bench_tmp.epd')}")
+        try:
+            os.remove(os.path.join(PATH, "bench_tmp.epd"))
+        except FileNotFoundError:
+            pass
 
 
 class Syzygy:
@@ -89,7 +92,10 @@ class Syzygy:
                         f.write(chunk)
 
                 with tarfile.open(tarball_path, "r:gz") as tar:
-                    tar.extractall(tmpdirname)
+                    if hasattr(tarfile, "data_filter"):
+                        tar.extractall(tmpdirname, filter="data")
+                    else:
+                        tar.extractall(tmpdirname)
 
                 shutil.move(
                     os.path.join(tmpdirname, file), os.path.join(PATH, "syzygy")
@@ -420,8 +426,10 @@ class Stockfish:
 
     def close(self):
         if self.process:
-            self.process.stdin.close()
-            self.process.stdout.close()
+            if self.process.stdin:
+                self.process.stdin.close()
+            if self.process.stdout:
+                self.process.stdout.close()
             return self.process.wait()
 
         return 0
