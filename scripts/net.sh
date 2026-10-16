@@ -56,12 +56,12 @@ fetch_network() {
       if validate_network "$_filename"; then
         echo "Successfully validated $_filename"
       else
-        rm -f $_filename
+        rm -f "$_filename"
         echo "Downloaded $_filename is invalid, and has been removed."
         continue
       fi
     else
-      rm -f $_filename
+      rm -f "$_filename"
       echo "Failed to download from $url"
     fi
     if [ -f "$_filename" ]; then
