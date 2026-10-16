@@ -38,5 +38,5 @@ if [ $# -gt 0 ]; then
    fi
 else
    # just report signature
-   echo $signature
+   echo "$signature"
 fi
