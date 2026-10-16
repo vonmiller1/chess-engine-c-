@@ -48,7 +48,7 @@ namespace Stockfish {
 
 namespace NN = Eval::NNUE;
 
-int MaxThreads = std::max(1024, 4 * int(get_hardware_concurrency()));
+int MaxThreads = std::max(1024, 4 * int(SYSTEM_THREADS_NB));
 
 // The default configuration will attempt to group L3 domains up to 32 threads.
 // This size was found to be a good balance between the Elo gain of increased
