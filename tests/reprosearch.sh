@@ -12,10 +12,13 @@ trap 'error ${LINENO}' ERR
 
 echo "reprosearch testing started"
 
+REPEAT_EXP=$(mktemp)
+trap 'rm -f "$REPEAT_EXP"' EXIT
+
 # repeat two short games, separated by ucinewgame.
 # with go nodes $nodes they should result in exactly
 # the same node count for each iteration.
-cat << EOF > repeat.exp
+cat << EOF > "$REPEAT_EXP"
  set timeout 10
  spawn ./stockfish
  lassign \$argv nodes
@@ -54,10 +57,8 @@ do
   echo "reprosearch testing with $nodes nodes"
 
   # each line should appear exactly an even number of times
-  expect repeat.exp $nodes 2>&1 | grep '^info ' | grep -o "nodes [0-9]*" | sort | uniq -c | awk '{if ($1%2!=0) exit(1)}'
+  expect "$REPEAT_EXP" "$nodes" 2>&1 | grep '^info ' | grep -o "nodes [0-9]*" | sort | uniq -c | awk '{if ($1%2!=0) exit(1)}'
 
 done
-
-rm repeat.exp
 
 echo "reprosearch testing OK"
