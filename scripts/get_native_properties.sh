@@ -291,6 +291,10 @@ uname_m=$(uname -m 2>/dev/null)
 uname_s=${GP_UNAME_S:-$uname_s}
 uname_m=${GP_UNAME_M:-$uname_m}
 
+if [ -z "$uname_s" ] || [ -z "$uname_m" ]; then
+	die "Unable to determine system architecture (uname failed)"
+fi
+
 case $uname_s in
 	Darwin)
 		case $uname_m in
