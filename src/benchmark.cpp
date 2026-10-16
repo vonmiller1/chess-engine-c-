@@ -22,13 +22,32 @@
 #include "misc.h"
 
 #include <algorithm>
+#include <cctype>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <string_view>
 #include <vector>
 
 namespace {
+
+bool is_unsigned_integer(std::string_view s) {
+    if (s.empty())
+        return false;
+    for (unsigned char c : s)
+        if (!std::isdigit(c))
+            return false;
+    return true;
+}
+
+void require_unsigned_integer(const char* what, const std::string& s) {
+    if (!is_unsigned_integer(s)) {
+        std::cerr << "Invalid bench " << what << ": " << s << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+}
+
 
 // clang-format off
 const std::vector<std::string> Defaults = {
@@ -404,6 +423,11 @@ std::vector<std::string> setup_bench(const std::string& currentFen, std::istream
     std::string fenFile   = (is >> token) ? token : "default";
     std::string limitType = (is >> token) ? token : "depth";
 
+    require_unsigned_integer("Hash", ttSize);
+    require_unsigned_integer("Threads", threads);
+    if (limitType != "eval")
+        require_unsigned_integer("limit", limit);
+
     go = limitType == "eval" ? "eval" : "go " + limitType + " " + limit;
 
     if (fenFile == "default")
@@ -468,7 +492,7 @@ BenchmarkSetup setup_benchmark(std::istream& is) {
     i64 requested;
 
     if (!(is >> requested))
-        setup.threads = int(get_hardware_concurrency());
+        setup.threads = int(SYSTEM_THREADS_NB);
     else
     {
         setup.threads = clamped("threads", requested, 1, MaxThreads);
