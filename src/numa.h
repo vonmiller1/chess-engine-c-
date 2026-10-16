@@ -87,7 +87,7 @@ inline CpuIndex get_hardware_concurrency() {
     concurrency = std::max<CpuIndex>(concurrency, GetActiveProcessorCount(ALL_PROCESSOR_GROUPS));
 #endif
 
-    return concurrency;
+    return std::max<CpuIndex>(1, concurrency);
 }
 
 inline const CpuIndex SYSTEM_THREADS_NB = std::max<CpuIndex>(1, get_hardware_concurrency());
