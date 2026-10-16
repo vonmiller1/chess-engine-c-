@@ -83,6 +83,8 @@ class TestCLI(metaclass=OrderedClassMembers):
         self.stockfish = None
 
     def afterEach(self):
+        if self.stockfish is None:
+            return
         assert postfix_check(self.stockfish.get_output()) == True
         self.stockfish.clear_output()
 
@@ -215,6 +217,8 @@ class TestInteractive(metaclass=OrderedClassMembers):
         assert self.stockfish.close() == 0
 
     def afterEach(self):
+        if self.stockfish is None:
+            return
         assert postfix_check(self.stockfish.get_output()) == True
         self.stockfish.clear_output()
 
@@ -449,6 +453,8 @@ class TestSyzygy(metaclass=OrderedClassMembers):
         assert self.stockfish.close() == 0
 
     def afterEach(self):
+        if self.stockfish is None:
+            return
         assert postfix_check(self.stockfish.get_output()) == True
         self.stockfish.clear_output()
 
@@ -517,6 +523,8 @@ class TestEnPassantSanitization(metaclass=OrderedClassMembers):
         assert self.stockfish.close() == 0
 
     def afterEach(self):
+        if self.stockfish is None:
+            return
         assert postfix_check(self.stockfish.get_output()) == True
         self.stockfish.clear_output()
 
@@ -602,6 +610,8 @@ class TestInvalidFEN(metaclass=OrderedClassMembers):
         self.stockfish = None
 
     def afterEach(self):
+        if self.stockfish is None:
+            return
         assert postfix_check(self.stockfish.get_output()) == True
         self.stockfish.clear_output()
 
@@ -635,6 +645,8 @@ class TestInvalidOptions(metaclass=OrderedClassMembers):
         assert self.stockfish.close() == 0
 
     def afterEach(self):
+        if self.stockfish is None:
+            return
         assert postfix_check(self.stockfish.get_output()) == True
         self.stockfish.clear_output()
 
@@ -677,6 +689,8 @@ class TestBenchFile(metaclass=OrderedClassMembers):
         self.stockfish = None
 
     def afterEach(self):
+        if self.stockfish is None:
+            return
         assert postfix_check(self.stockfish.get_output()) == True
         self.stockfish.clear_output()
 
