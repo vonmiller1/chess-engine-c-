@@ -15,7 +15,7 @@ body:
     required: true
 
 - type: textarea
-  attributes:how many contr
+  attributes:
     label: Expected behavior
     description: A clear and concise description of what you expected to happen.
   validations:
