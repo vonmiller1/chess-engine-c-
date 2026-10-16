@@ -4,6 +4,11 @@
 
 set -eu
 
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+    echo "Usage: $0 STOCKFISH_EXE [EXPECTED_BENCH]" >&2
+    exit 2
+fi
+
 STOCKFISH_EXE=$1
 
 extract() {
